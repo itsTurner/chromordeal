@@ -1,0 +1,45 @@
+@import url('./selector.css');
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+  display: table;
+}
+
+.selector {
+  display: table-cell;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.triangle {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)), linear-gradient(to right, var(--base-color), var(--base-color));
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  --side-length: calc(3/sqrt(3)/2*(var(--circle-size) - (var(--thumb-size) * 2)));
+  top: var(--thumb-size);
+  position: relative;
+  width: var(--side-length);
+  height: calc(var(--side-length)*.866);
+  margin: auto;
+  transform: rotate(calc(var(--angle) + 90deg));
+  transform-origin: 50% 66.6%;
+}
+
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotating {
+  animation: rotating 2s linear infinite;
+}
