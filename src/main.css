@@ -8,13 +8,9 @@ html, body {
 main {
   height: 100%;
   width: 100%;
-  display: table;
-}
-
-.selector {
-  display: table-cell;
-  height: 100%;
-  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .triangle {
