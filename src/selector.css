@@ -195,6 +195,7 @@ CIRCULAR
     --track-fill: white;
 	/* --track-fill: rgba(255,255,255,0.5); */
 	--thumb-size: 20px;
+    --thumb-bdw: 1.5px;
 
 	--gradient-start: 0deg;
 	--gradient-end: 0deg;

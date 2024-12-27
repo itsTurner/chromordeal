@@ -96,8 +96,13 @@ class RangeSlider {
 					default: break;
 				}
 			});
-			this.output.addEventListener('pointerdown', () => {return this.output.addEventListener('pointermove', pointerMove)});
-			this.output.addEventListener('pointerup', () => {return this.output.removeEventListener('pointermove', pointerMove)});
+            this.output.addEventListener('mousedown', () => {
+                document.addEventListener('mousemove', pointerMove)
+                document.addEventListener('mouseup', () => {
+                    document.removeEventListener("mousemove", pointerMove)
+                })
+            });
+			// this.output.addEventListener('mouseup', () => {return this.output.removeEventListener('mousemove', pointerMove)});
 
 			this.updateCircle();
 		}
@@ -149,7 +154,7 @@ class RangeSlider {
         this.triangle.style.setProperty('--center-top', `${this.center.y}px`);
         this.triangle.style.setProperty('--center-left', `${this.center.x}px`);
 
-        let newHue = HSVtoRGB(angleToHue(angle)/360, 1, 0.5);
+        let newHue = HSVtoRGB(angleToHue(angle)/360, 1, 1);
         this.triangle.style.setProperty('--base-color', `rgb(${newHue.r},${newHue.g},${newHue.b})`);
 		// this.wrapper.style.setProperty('--gradient-end', `${end}deg`);
 	}
