@@ -12,7 +12,9 @@ class RangeSlider {
 			varPercentUpper: '--rng-percent-upper',
 			varThumb: '--rng-thumb-w',
 			varUnit: '--rng-unit',
-			varValue: '--rng-value'
+            varValue: '--rng-value',
+            thumbSize: '--thumb-size',
+            circleSize: '--circle-size'
 		}, stringToType(settings));
 
 		this.range = element;
@@ -38,7 +40,9 @@ class RangeSlider {
 		this.ticks = parseInt(range.dataset.ticks, 10);
 		this.upper = this.settings.range.includes('lower') ? range.parentNode.querySelector(`[data-range*="upper"]`) : null;
 		const isMulti = (this.lower || this.upper);
-		this.wrapper = isMulti ? range.parentNode : document.createElement('div');
+        this.wrapper = isMulti ? range.parentNode : document.createElement('div');
+        this.circleSize = 200;
+        this.thumbSize = 20;
 
 		/* output */
 		if (this.output) {
@@ -96,20 +100,28 @@ class RangeSlider {
 					default: break;
 				}
 			});
-            this.output.addEventListener('mousedown', () => {
-                document.addEventListener('mousemove', pointerMove)
-                document.addEventListener('mouseup', () => {
-                    document.removeEventListener("mousemove", pointerMove)
-                })
+            this.output.addEventListener('mousedown', e => {
+                if (Math.sqrt((e.pageX - this.center.x) ** 2 + (e.pageY - this.center.y) ** 2) > (this.circleSize / 2 - this.thumbSize)) {
+                    document.body.style.cursor = 'grab';
+                    document.addEventListener('mousemove', pointerMove)
+                    document.addEventListener('mouseup', () => {
+                        document.removeEventListener("mousemove", pointerMove)
+                        document.body.style.cursor = 'auto';
+                    })   
+                }
             });
+
+            this.wrapper.style.setProperty(this.settings.circleSize, `${this.circleSize}px`);
+            this.wrapper.style.setProperty(this.settings.thumbSize, `${this.thumbSize}px`);
+
 			// this.output.addEventListener('mouseup', () => {return this.output.removeEventListener('mousemove', pointerMove)});
 
 			this.updateCircle();
 		}
 		else {
 			range.addEventListener('input', () => {return this.updateRange()});
-		}
-
+        }
+        
 		/* TODO: Send init event ? */
 		range.dispatchEvent(new Event('input'));
 	}
@@ -128,7 +140,8 @@ class RangeSlider {
 	* @function setCenter
 	* @description Calculates center of circular range
 	*/
-	setCenter() {
+    setCenter() {
+        console.log('center set!');
 		const rect = this.wrapper.getBoundingClientRect();
 		this.center = {
 			x: rect.left + rect.width / 2,
